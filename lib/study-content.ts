@@ -75,6 +75,117 @@ export const studyContent: Record<number, any> = {
       },
     ],
   },
+  2: {
+    title: "Single-Area OSPFv2 Configuration",
+    description: "Configuring and verifying OSPF in a single-area network",
+    keyTopics: ["OSPF Configuration", "Router ID", "Network Command", "Passive Interfaces", "OSPF Verification"],
+    concepts: [
+      {
+        title: "OSPF Configuration Steps",
+        description: "Basic steps to configure OSPF on a router",
+        points: [
+          "Enable OSPF with 'router ospf process-id' command",
+          "Configure router ID (optional but recommended)",
+          "Enable OSPF on interfaces using network command or ip ospf command",
+          "Verify OSPF configuration and adjacencies",
+        ],
+      },
+      {
+        title: "Router ID Configuration",
+        description: "Three methods to determine OSPF router ID (in priority order)",
+        points: [
+          "Explicitly configured with 'router-id' command (highest priority)",
+          "Highest IPv4 address of any loopback interface",
+          "Highest IPv4 address of any active physical interface (lowest priority)",
+          "Router ID is a 32-bit value formatted like an IPv4 address",
+        ],
+      },
+      {
+        title: "Network Command",
+        description: "Enable OSPF on interfaces using the network command",
+        points: [
+          "Syntax: network network-address wildcard-mask area area-id",
+          "Uses wildcard mask (inverse of subnet mask)",
+          "Matches interfaces based on IP address range",
+          "Configured in OSPF router configuration mode",
+        ],
+      },
+      {
+        title: "Interface Configuration Method",
+        description: "Alternative method to enable OSPF directly on interfaces",
+        points: [
+          "Command: ip ospf process-id area area-id",
+          "Configured in interface configuration mode",
+          "More precise control over which interfaces run OSPF",
+          "Recommended for modern OSPF configurations",
+        ],
+      },
+      {
+        title: "Passive Interfaces",
+        description: "Prevent OSPF updates on specific interfaces",
+        points: [
+          "Command: passive-interface interface-id",
+          "Stops Hello packets on the interface",
+          "Network is still advertised in OSPF",
+          "Used on interfaces with no OSPF neighbors (e.g., user LANs)",
+          "Can use 'passive-interface default' then enable specific interfaces",
+        ],
+      },
+      {
+        title: "OSPF Cost Metric",
+        description: "Understanding and modifying OSPF cost",
+        points: [
+          "Cost = Reference Bandwidth / Interface Bandwidth",
+          "Default reference bandwidth is 100 Mbps",
+          "Modify with 'auto-cost reference-bandwidth' command",
+          "Manually set cost with 'ip ospf cost' interface command",
+          "Lower cost is preferred",
+        ],
+      },
+    ],
+    commands: [
+      {
+        command: "router ospf 10",
+        description: "Enable OSPF process 10 (process-id is locally significant)",
+      },
+      {
+        command: "router-id 1.1.1.1",
+        description: "Manually configure OSPF router ID",
+      },
+      {
+        command: "network 192.168.1.0 0.0.0.255 area 0",
+        description: "Enable OSPF on interfaces matching the network range",
+      },
+      {
+        command: "ip ospf 10 area 0",
+        description: "Enable OSPF directly on an interface (interface config mode)",
+      },
+      {
+        command: "passive-interface GigabitEthernet0/0",
+        description: "Make an interface passive (no Hello packets sent)",
+      },
+      {
+        command: "show ip ospf interface",
+        description: "Display OSPF interface information",
+      },
+      {
+        command: "show ip ospf neighbor",
+        description: "Display OSPF neighbor adjacencies",
+      },
+      {
+        command: "show ip protocols",
+        description: "Display routing protocol information including OSPF",
+      },
+      {
+        command: "auto-cost reference-bandwidth 10000",
+        description: "Set reference bandwidth to 10 Gbps for cost calculation",
+      },
+      {
+        command: "ip ospf cost 50",
+        description: "Manually set OSPF cost on an interface",
+      },
+    ],
+  },
   3: {
     title: "Network Security Concepts",
     description: "Understanding network security threats and mitigation strategies",
@@ -299,6 +410,98 @@ export const studyContent: Record<number, any> = {
       {
         command: "show ip nat statistics",
         description: "Display NAT statistics",
+      },
+    ],
+  },
+  7: {
+    title: "WAN Concepts",
+    description: "Understanding Wide Area Network technologies and connections",
+    keyTopics: ["WAN Technologies", "WAN Connections", "PPP", "HDLC", "Modern WAN Solutions"],
+    concepts: [
+      {
+        title: "WAN Overview",
+        description: "Wide Area Networks connect LANs over large geographic distances",
+        points: [
+          "Operates over large geographic areas",
+          "Connects LANs and other types of networks",
+          "Typically owned and managed by service providers",
+          "Uses various connection types and technologies",
+        ],
+      },
+      {
+        title: "WAN Connection Types",
+        description: "Different methods to connect to WANs",
+        points: [
+          "Dedicated Leased Lines - Permanent point-to-point connections (T1/E1, T3/E3)",
+          "Circuit-Switched - Dial-up connections established on demand (ISDN, dial-up)",
+          "Packet-Switched - Shared connections using virtual circuits (Frame Relay, ATM)",
+          "Internet-based - VPNs over public internet (IPsec, SSL VPN)",
+        ],
+      },
+      {
+        title: "PPP (Point-to-Point Protocol)",
+        description: "Standard WAN encapsulation protocol for point-to-point links",
+        points: [
+          "HDLC-like encapsulation for data transport",
+          "LCP (Link Control Protocol) - Establishes, configures, and tests links",
+          "NCP (Network Control Protocol) - Configures network layer protocols",
+          "Supports authentication (PAP, CHAP)",
+          "Multilink PPP for load balancing",
+        ],
+      },
+      {
+        title: "HDLC (High-Level Data Link Control)",
+        description: "Default encapsulation on Cisco serial interfaces",
+        points: [
+          "Cisco's HDLC is proprietary (includes protocol type field)",
+          "Default encapsulation on serial interfaces",
+          "Simple, no authentication or error recovery",
+          "Point-to-point and multipoint configurations",
+        ],
+      },
+      {
+        title: "Modern WAN Solutions",
+        description: "Current WAN technologies replacing legacy solutions",
+        points: [
+          "MPLS - Multiprotocol Label Switching for efficient routing",
+          "Metro Ethernet - Ethernet-based WAN connections",
+          "Broadband - DSL, Cable, Fiber (FTTH/FTTP)",
+          "Wireless - 4G LTE, 5G, Satellite",
+          "SD-WAN - Software-Defined WAN for intelligent path selection",
+        ],
+      },
+      {
+        title: "WAN Terminology",
+        description: "Common WAN terms and concepts",
+        points: [
+          "CPE (Customer Premises Equipment) - Devices at customer site",
+          "DCE (Data Communications Equipment) - Provides clocking",
+          "DTE (Data Terminal Equipment) - Connects to DCE",
+          "Demarcation Point - Where provider responsibility ends",
+          "Local Loop - Connection from customer to CO (Central Office)",
+        ],
+      },
+    ],
+    commands: [
+      {
+        command: "encapsulation ppp",
+        description: "Configure PPP encapsulation on a serial interface",
+      },
+      {
+        command: "encapsulation hdlc",
+        description: "Configure HDLC encapsulation (default on Cisco)",
+      },
+      {
+        command: "show interfaces serial 0/0/0",
+        description: "Display serial interface information including encapsulation",
+      },
+      {
+        command: "ppp authentication chap",
+        description: "Enable CHAP authentication on PPP link",
+      },
+      {
+        command: "clock rate 64000",
+        description: "Set clock rate on DCE interface (bits per second)",
       },
     ],
   },
